@@ -3,6 +3,7 @@ const express = require('express')
 const exphdbs = require('express-handlebars')
 const methodOverride = require('method-override')
 const routes = require('./routes')
+require('./config/mongoose')
 
 // Define server info
 const PORT = process.env.PORT || 3000
