@@ -1,6 +1,6 @@
 // Require node_modules
 const express = require('express')
-const exphdbs = require('express-handlebars')
+const expressHandlebars = require('express-handlebars')
 const methodOverride = require('method-override')
 const routes = require('./routes')
 require('./config/mongoose')
@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 3000
 const app = express()
 
 // Setting express-handlebars
-app.engine('hbs', exphdbs({ defaultLayout: 'main', extname: '.hbs' }))
+app.engine('hbs', expressHandlebars({ defaultLayout: 'main', extname: '.hbs' }))
 app.set('view engine', 'hbs')
 
 // Setting body-parser
