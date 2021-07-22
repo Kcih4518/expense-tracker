@@ -43,7 +43,12 @@
             <div class='form-group row'>
               <label for='category' class='col-md-4 col-form-label'>類別* :</label>
               <div class='col-md-8'>
-                <select class='form-select' id='category' required>
+                <select
+                  class='form-select'
+                  id='category'
+                  name='category'
+                  required
+                >
                   <option value=''>Select</option>
                   {{#each categories}}
                     <option value='{{this.name}}'>{{this.name}}</option>
