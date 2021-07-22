@@ -34,9 +34,9 @@
                 <div class='row'>
                   <div class='col-10 mr-auto'>
                     {{#each ../categories}}
-                      {{#if (isEqual ../this.category this.name)}}
+                      {{#is ../this.category this.name}}
                         {{{this.icon}}}
-                      {{/if}}
+                      {{/is}}
                     {{/each}}
                     <h4 style='display: inline; vertical-align: middle;'>
                       {{this.name}}
