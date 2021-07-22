@@ -4,7 +4,7 @@ const expressHandlebars = require('express-handlebars')
 const methodOverride = require('method-override')
 const routes = require('./routes')
 require('./config/mongoose')
-const handlebarsHelpers = require('./helpers/handlebarsHelpers')
+const handlebarsHelpers = require('handlebars-helpers')(['comparison'])
 
 // Define server info
 const PORT = process.env.PORT || 3000
