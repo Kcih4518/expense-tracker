@@ -10,6 +10,7 @@
 
           </div>
           <form method='POST' action='/expenses/{{record._id}}/?_method=PUT'>
+          {{>formMessages}}
             <div class='form-group row'>
               <label for='name' class='col-md-4 col-form-label'>
                 名稱* :
@@ -20,7 +21,11 @@
                   name='name'
                   class='form-control'
                   id='name'
+                  {{#if formErrors}}
+                  value='{{recordUpdateInfo.name}}'
+                  {{else}}
                   value='{{record.name}}'
+                  {{/if}}
                   required
                 />
               </div>
@@ -36,7 +41,11 @@
                   name='date'
                   class='form-control'
                   id='record-date'
+                   {{#if formErrors}}
+                  value='{{recordUpdateInfo.date}}'
+                  {{else}}
                   value='{{recordDate}}'
+                  {{/if}}
                   required
                 />
               </div>
@@ -52,9 +61,15 @@
                   required
                 >
                   <option value=''>Select</option>
-                  {{#each categories}}
-                    <option value='{{this.name}}' {{#is this.name ../record.category}} selected {{/is}}>{{this.name}}</option>
-                  {{/each}}
+                  {{#if formErrors}}
+                    {{#each categories}}
+                      <option value='{{this.name}}' {{#is this.name ../recordUpdateInfo.category}} selected {{/is}}>{{this.name}}</option>
+                    {{/each}}
+                  {{else}}
+                    {{#each categories}}
+                      <option value='{{this.name}}' {{#is this.name ../record.category}} selected {{/is}}>{{this.name}}</option>
+                    {{/each}}
+                  {{/if}}
                 </select>
               </div>
             </div>
@@ -70,7 +85,11 @@
                   class='form-control'
                   id='record-amount'
                   min='1'
-                  value='{{record.amount}}'
+                  {{#if formErrors}}
+                    value='{{recordUpdateInfo.amount}}'
+                  {{else}}
+                    value='{{record.amount}}'
+                  {{/if}}
                   required
                 />
               </div>
