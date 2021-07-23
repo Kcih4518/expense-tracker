@@ -10,6 +10,7 @@
 
           </div>
           <form method='POST' action='/expenses'>
+            {{>formMessages}}
             <div class='form-group row'>
               <label for='name' class='col-md-4 col-form-label'>
                 名稱* :
@@ -20,6 +21,7 @@
                   name='name'
                   class='form-control'
                   id='name'
+                  value="{{expensesRecord.name}}"
                   required
                 />
               </div>
@@ -35,6 +37,7 @@
                   name='date'
                   class='form-control'
                   id='record-date'
+                  value="{{expensesRecord.date}}"
                   required
                 />
               </div>
@@ -51,7 +54,7 @@
                 >
                   <option value=''>Select</option>
                   {{#each categories}}
-                    <option value='{{this.name}}'>{{this.name}}</option>
+                    <option value='{{this.name}}' {{#is this.name ../expensesRecord.category}} selected {{/is}}>{{this.name}}</option>
                   {{/each}}
                 </select>
               </div>
@@ -67,6 +70,7 @@
                   name='amount'
                   class='form-control'
                   id='record-amount'
+                  value="{{expensesRecord.amount}}"
                   min='1'
                   required
                 />
