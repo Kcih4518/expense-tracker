@@ -16,8 +16,21 @@ router.get('/add', (req, res) => {
 // Create: Add a new expenses record
 // TODO: Error handle : When cannot be established normally
 // TODO: Data verification of req.body
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
+  const categories = await Category.find().lean()
   const expensesRecord = req.body
+  const formErrors = []
+
+  if (!expensesRecord.name.trim().length) {
+    formErrors.push({ message: '名稱不得輸入空白' })
+  }
+  if (formErrors.length)
+    return res.render('add', {
+      categories,
+      expensesRecord,
+      formErrors
+    })
+
   return Record.create(expensesRecord)
     .then(() => res.redirect('/'))
     .catch((error) => console.log(error))
