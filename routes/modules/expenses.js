@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const Record = require('../../models/records')
 const Category = require('../../models/categories')
 
 // Create : Display the form for creating expenses record
@@ -9,6 +10,16 @@ router.get('/add', (req, res) => {
     .then((categories) => {
       res.render('add', { categories })
     })
+    .catch((error) => console.log(error))
+})
+
+// Create: Add a new expenses record
+// TODO: Error handle : When cannot be established normally
+// TODO: Data verification of req.body
+router.post('/', (req, res) => {
+  const expensesRecord = req.body
+  return Record.create(expensesRecord)
+    .then(() => res.redirect('/'))
     .catch((error) => console.log(error))
 })
 
