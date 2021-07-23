@@ -52,4 +52,14 @@ router.put('/:id', (req, res) => {
     .catch((error) => console.log(error))
 })
 
+// Delete : Remove expenses record
+// TODO: Error handle : When cannot delete DB data
+router.delete('/:id', (req, res) => {
+  const id = req.params.id
+  Record.findById(id)
+    .then((record) => record.remove())
+    .then(() => res.redirect('/'))
+    .catch((error) => console.log(error))
+})
+
 module.exports = router
