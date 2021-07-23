@@ -24,12 +24,13 @@ router.post('/', async (req, res) => {
   if (!expensesRecord.name.trim().length) {
     formErrors.push({ message: '名稱不得輸入空白' })
   }
-  if (formErrors.length)
+  if (formErrors.length) {
     return res.render('add', {
       categories,
       expensesRecord,
       formErrors
     })
+  }
 
   return Record.create(expensesRecord)
     .then(() => res.redirect('/'))
@@ -38,11 +39,13 @@ router.post('/', async (req, res) => {
 
 // Read: filter by selection
 router.get('/filter', async (req, res) => {
+  let totalAmount = 0
   const filterOption = req.query.selectOption
   const categories = await Category.find().lean()
   const filterObject = new Object()
-  filterObject['category'] = filterOption
-  let totalAmount = 0
+
+  filterObject.category = filterOption
+
   // If option is 類別 need to query all record
   if (!filterOption) {
     delete filterObject.category
@@ -68,7 +71,7 @@ router.get('/:id/edit', async (req, res) => {
   return Record.findById(id)
     .lean()
     .then((record) => {
-      recordDate = record.date.toISOString().slice(0, 10)
+      const recordDate = record.date.toISOString().slice(0, 10)
       res.render('edit', { record, categories, recordDate })
     })
     .catch((error) => console.log(error))
@@ -87,13 +90,14 @@ router.put('/:id', async (req, res) => {
   if (!recordUpdateInfo.name.trim().length) {
     formErrors.push({ message: '名稱不得輸入空白' })
   }
-  if (formErrors.length)
+  if (formErrors.length) {
     return res.render('edit', {
       record,
       categories,
       recordUpdateInfo,
       formErrors
     })
+  }
 
   return Record.findById(id)
     .then((record) => {
