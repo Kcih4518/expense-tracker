@@ -24,6 +24,7 @@ router.post('/', (req, res) => {
 })
 
 // Update : Display the form for editing expenses record
+// TODO: Error handle : When cannot update DB data
 router.get('/:id/edit', async (req, res) => {
   const categories = await Category.find().lean()
   const id = req.params.id
@@ -33,6 +34,21 @@ router.get('/:id/edit', async (req, res) => {
       recordDate = record.date.toISOString().slice(0, 10)
       res.render('edit', { record, categories, recordDate })
     })
+    .catch((error) => console.log(error))
+})
+
+// Update : Modify expenses record info in DB data
+// TODO: Error handle : When cannot update DB data
+// TODO: Data verification of req.body
+router.put('/:id', (req, res) => {
+  const id = req.params.id
+  const recordUpdateInfo = req.body
+  return Record.findById(id)
+    .then((record) => {
+      record = Object.assign(record, recordUpdateInfo)
+      record.save()
+    })
+    .then(() => res.redirect('/'))
     .catch((error) => console.log(error))
 })
 
