@@ -56,16 +56,21 @@
               <li class='list-group-item'><a
                   href='./expenses/{{this._id}}/edit'
                 >修改</a></li>
-              <li class='list-group-item'><a
-                  href='./expenses/{{this._id}}?_method=DELETE'
-                >刪除</a></li>
+              <li class='list-group-item'>
+                <form
+                  action='./expenses/{{this._id}}?_method=DELETE'
+                  method='POST'
+                >
+                  <button class='btn' type='submit'>刪除</button>
+                </form>
+              </li>
             </ul>
           {{/each}}
         </div>
       </div>
     </div>
     <div class='col-12 mt-2' style='text-align:center;'>
-      <a class="btn btn-danger" href="./expenses/add" role="button">新增支出</a>
+      <a class='btn btn-danger' href='./expenses/add' role='button'>新增支出</a>
     </div>
   </div>
 </div>
