@@ -77,9 +77,24 @@ router.get('/:id/edit', async (req, res) => {
 // Update : Modify expenses record info in DB data
 // TODO: Error handle : When cannot update DB data
 // TODO: Data verification of req.body
-router.put('/:id', (req, res) => {
+router.put('/:id', async (req, res) => {
   const id = req.params.id
   const recordUpdateInfo = req.body
+  const categories = await Category.find().lean()
+  const record = await Record.findById(id).lean()
+  const formErrors = []
+
+  if (!recordUpdateInfo.name.trim().length) {
+    formErrors.push({ message: '名稱不得輸入空白' })
+  }
+  if (formErrors.length)
+    return res.render('edit', {
+      record,
+      categories,
+      recordUpdateInfo,
+      formErrors
+    })
+
   return Record.findById(id)
     .then((record) => {
       record = Object.assign(record, recordUpdateInfo)
