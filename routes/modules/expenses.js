@@ -23,4 +23,17 @@ router.post('/', (req, res) => {
     .catch((error) => console.log(error))
 })
 
+// Update : Display the form for editing expenses record
+router.get('/:id/edit', async (req, res) => {
+  const categories = await Category.find().lean()
+  const id = req.params.id
+  return Record.findById(id)
+    .lean()
+    .then((record) => {
+      recordDate = record.date.toISOString().slice(0, 10)
+      res.render('edit', { record, categories, recordDate })
+    })
+    .catch((error) => console.log(error))
+})
+
 module.exports = router
