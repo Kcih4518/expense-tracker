@@ -23,6 +23,30 @@ router.post('/', (req, res) => {
     .catch((error) => console.log(error))
 })
 
+// Read: filter by selection
+router.get('/filter', async (req, res) => {
+  const filterOption = req.query.selectOption
+  const categories = await Category.find().lean()
+  const filterObject = new Object()
+  filterObject['category'] = filterOption
+  let totalAmount = 0
+  // If option is 類別 need to query all record
+  if (!filterOption) {
+    delete filterObject.category
+  }
+
+  return Record.find(filterObject)
+    .lean()
+    .sort({ date: 'asc' })
+    .then((records) => {
+      records.forEach((record) => {
+        totalAmount += record.amount
+      })
+      res.render('index', { records, categories, filterOption, totalAmount })
+    })
+    .catch((error) => console.log(error))
+})
+
 // Update : Display the form for editing expenses record
 // TODO: Error handle : When cannot update DB data
 router.get('/:id/edit', async (req, res) => {
