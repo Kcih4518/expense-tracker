@@ -1,104 +1,68 @@
-<div class='container py-5'>
+<div class='container py-5' style="width: 850px;">
 
   <div class='row'>
     <div class='col-12 col-lg-10 col-xl-8 mx-auto'>
-      <div class='card'>
-        <div class='card-body'>
-          <div class='row'>
-            <p class='col-md-4'>*必填欄位</p>
-            <h5 class='card-title col-md-8'>請輸入你的支出 </h5>
-
+      <div class='card' style="border: 0;">
+        <div class='card-body' style="font-size: 1.8rem;">
+          <div class='row mb-4'>
+            <small class='col-md-4' style="font-size:1.2rem;color:orangered">*必填欄位</small>
+            <h4 class='card-title col-md-8' style="text-align: center;">請輸入你的支出 </h4>
           </div>
           <form method='POST' action='/expenses/{{record._id}}/?_method=PUT'>
-          {{>formMessages}}
-            <div class='form-group row'>
+            {{>formMessages}}
+            <div class='form-group row align-items-center mb-4'>
               <label for='name' class='col-md-4 col-form-label'>
                 名稱* :
               </label>
               <div class='col-md-8'>
-                <input
-                  type='text'
-                  name='name'
-                  class='form-control'
-                  id='name'
-                  {{#if formErrors}}
-                  value='{{recordUpdateInfo.name}}'
-                  {{else}}
-                  value='{{record.name}}'
-                  {{/if}}
-                  required
-                />
+                <input style="font-size:1.6rem" type='text' name='name' class='form-control' id='name' {{#if
+                  formErrors}} value='{{recordUpdateInfo.name}}' {{else}} value='{{record.name}}' {{/if}} required />
               </div>
             </div>
 
-            <div class='form-group row'>
+            <div class='form-group row align-items-center mb-4'>
               <label for='record-date' class='col-md-4 col-form-label'>
                 日期* :
               </label>
               <div class='col-md-8'>
-                <input
-                  type='date'
-                  name='date'
-                  class='form-control'
-                  id='record-date'
-                   {{#if formErrors}}
-                  value='{{recordUpdateInfo.date}}'
-                  {{else}}
-                  value='{{recordDate}}'
-                  {{/if}}
-                  required
-                />
+                <input style="font-size:1.6rem" type='date' name='date' class='form-control' id='record-date' {{#if
+                  formErrors}} value='{{recordUpdateInfo.date}}' {{else}} value='{{recordDate}}' {{/if}} required />
               </div>
             </div>
 
-            <div class='form-group row'>
+            <div class='form-group row align-items-center mb-4'>
               <label for='category' class='col-md-4 col-form-label'>類別* :</label>
               <div class='col-md-8'>
-                <select
-                  class='form-select'
-                  id='category'
-                  name='category'
-                  required
-                >
+                <select style="font-size:1.6rem" class='form-select' id='category' name='category' required>
                   <option value=''>Select</option>
                   {{#if formErrors}}
-                    {{#each categories}}
-                      <option value='{{this.name}}' {{#is this.name ../recordUpdateInfo.category}} selected {{/is}}>{{this.name}}</option>
-                    {{/each}}
+                  {{#each categories}}
+                  <option value='{{this.name}}' {{#is this.name ../recordUpdateInfo.category}} selected {{/is}}>
+                    {{this.name}}</option>
+                  {{/each}}
                   {{else}}
-                    {{#each categories}}
-                      <option value='{{this.name}}' {{#is this.name ../record.category}} selected {{/is}}>{{this.name}}</option>
-                    {{/each}}
+                  {{#each categories}}
+                  <option value='{{this.name}}' {{#is this.name ../record.category}} selected {{/is}}>{{this.name}}
+                  </option>
+                  {{/each}}
                   {{/if}}
                 </select>
               </div>
             </div>
 
-            <div class='form-group row'>
+            <div class='form-group row align-items-center mb-4'>
               <label for='record-amount' class='col-md-4 col-form-label'>
                 金額* :
               </label>
               <div class='col-md-8'>
-                <input
-                  type='number'
-                  name='amount'
-                  class='form-control'
-                  id='record-amount'
-                  min='1'
-                  {{#if formErrors}}
-                    value='{{recordUpdateInfo.amount}}'
-                  {{else}}
-                    value='{{record.amount}}'
-                  {{/if}}
-                  required
-                />
+                <input style="font-size:1.6rem" type='number' name='amount' class='form-control' id='record-amount'
+                  min='1' {{#if formErrors}} value='{{recordUpdateInfo.amount}}' {{else}} value='{{record.amount}}'
+                  {{/if}} required />
               </div>
             </div>
 
-            <div
-              class='container d-flex justify-content-center align-items-center'
-            >
-              <button class='btn btn-success mx-3 mt-1' type='submit'>送出
+            <div class='container d-flex justify-content-center align-items-center' style="padding-right: 50;">
+              <button class='btn btn-success mx-3 mt-4' type='submit' style="font-size: 2rem; width:200px">送出
               </button>
             </div>
           </form>
