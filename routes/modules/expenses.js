@@ -71,8 +71,7 @@ router.get('/:id/edit', async (req, res) => {
   return Record.findById(id)
     .lean()
     .then((record) => {
-      const recordDate = record.date.toISOString().slice(0, 10)
-      res.render('edit', { record, categories, recordDate })
+      res.render('edit', { record, categories })
     })
     .catch((error) => console.log(error))
 })
