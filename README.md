@@ -65,4 +65,4 @@ Express is running on http://localhost:3000
 
 5. 透過 Browser 打開 [http://localhost:3000](http://localhost:3000)
 
-![](https://i.imgur.com/rmOjchP.png)
+![](https://i.imgur.com/nMePNVu.png)
