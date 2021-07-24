@@ -21,8 +21,8 @@
 | handlebars-handlebars | 0.10.0   |
 | Mongoose              | 5.13.2   |
 | MongoDB               | 4.2.5    |
-| method-override"      | 3.0.0"   |
-| standard"             | 16.0.3"  |
+| method-override       | 3.0.0    |
+| standard              | 16.0.3   |
 
 ### Description
 
