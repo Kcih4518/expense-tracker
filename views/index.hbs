@@ -1,117 +1,93 @@
-<div class='container py-5'>
-
+<div class='container py-5' style="width: 850px;">
   <div class='row'>
-    <div class='col-8 mx-auto'>
+    <div class=' col-8 col-md-8'>
       <form action='/expenses/filter'>
-        <select
-          class='form-select form-select-lg mb-3'
-          id='filer'
-          name='selectOption'
-          onchange='submit()'
-        >
+        <select style="font-size:1.6rem" class='form-select form-select-lg mb-3' id='filer' name='selectOption'
+          onchange='submit()'>
           <option value=''>所有類別</option>
           {{#each categories}}
-            <option value='{{this.name}}' {{#is this.name ../filterOption}} selected {{/is}} >{{this.name}}</option>
+          <option value='{{this.name}}' {{#is this.name ../filterOption}} selected {{/is}}>{{this.name}}</option>
           {{/each}}
         </select>
       </form>
     </div>
-    <div class='col-8 mx-auto'>
+    <div class='col-8 col-md-8'>
       <div class='row'>
         <div class='col-4'>
-          <p>總金額:</p>
+          <big class="fs-4 px-3">總金額：</big>
         </div>
-        <div class='col-8'>
-          <p>{{totalAmount}}</p>
+        <div class='col-8' style="text-align:right;">
+          <span class="px-1" style="font-size:6em; color:#f88a82; display:inline-block; ">{{
+            totalAmount
+            }}</span>
         </div>
       </div>
     </div>
-    <div class='record-list col-8 mx-auto'>
-      <div class='row'>
+
+
+    <div class='col-12 mx-auto'>
+      <div class="row">
         <div class='col-9 mx-auto'>
-          <ul class='list-group'>
-            {{#each records}}
-              <li class='list-group-item'>
-                <div class='row'>
-                  <div class='col-10 mr-auto'>
-                    {{#each ../categories}}
-                      {{#is ../this.category this.name}}
-                        {{{this.icon}}}
-                      {{/is}}
-                    {{/each}}
-                    <h4 style='display: inline; vertical-align: middle;'>
-                      {{this.name}}
-                    </h4>
+          <table class="table table-striped" style="width: 550px;">
+            <tbody>
+              {{#each records}}
+              <tr style="font-size: 1.5rem;vertical-align:middle">
+                <td style="margin:0;width:2px;padding:8 0 8 5;color:rgb(120, 205, 208)">{{#each ../categories}}
+                  {{#is ../this.category this.name}}
+                  {{{this.icon}}}
+                  {{/is}}
+                  {{/each}}</td>
+                <td>
+                  <div class="d-flex flex-column">
+                    <span>{{this.name}}</span>
+                    <small style="font-size: 0.9rem;" class="mt-1">{{this.date}}</small>
                   </div>
-                  <div class='col-2 mr-auto'>
-                    <span>{{this.amount}}</span>
-                  </div>
-                </div>
-              </li>
-            {{/each}}
-          </ul>
+                </td>
+                <td style=" text-align: right;padding-right:16;">{{this.amount}}</td>
+              </tr>
+              {{/each}}
+            </tbody>
+          </table>
         </div>
-        <div class='col-3'>
+
+        <div iv class='col-3'>
           {{#each records}}
-            <ul class='list-group list-group-horizontal'>
-              <li class='list-group-item'><a
-                  href='/expenses/{{this._id}}/edit'
-                >修改</a></li>
-              <li class='list-group-item'>
-                <a
-                  class='btn'
-                  type='button'
-                  data-bs-toggle='modal'
-                  data-bs-target='#modal-{{this._id}}'
-                >刪除</a>
-              </li>
-            </ul>
-            {{! Modal }}
-            <div
-              class='modal fade'
-              id='modal-{{this._id}}'
-              tabindex='-1'
-              role='dialog'
-              aria-labelledby='deleteModalCenterTitle'
-              aria-hidden='true'
-            >
-              <div class='modal-dialog modal-dialog-centered'>
-                <div class='modal-content'>
-                  <div class='modal-header'>
-                    <h5
-                      class='modal-title'
-                      id='deleteModalCenterTitle'
-                    >{{this.name}}</h5>
-                    <button
-                      type='button'
-                      class='btn-close'
-                      data-bs-dismiss='modal'
-                      aria-label='Close'
-                    ></button>
-                  </div>
-                  <div class='modal-body'>
-                    確認要將「{{this.name}}」刪除嗎？
-                  </div>
-                  <div class='modal-footer'>
-                    <form
-                      action='/expenses/{{this._id}}/?_method=DELETE'
-                      method='POST'
-                    >
-                      <button
-                        type='submit'
-                        class='btn btn-outline-danger'
-                      >delete</button>
-                    </form>
-                  </div>
+          <ul class='list-group list-group-horizontal'>
+            <li class='list-group-item mb-1' style="border: 0;vertical-align:middle;padding: .5rem 0.8rem;"><a
+                href='/expenses/{{this._id}}/edit' class='btn' type='button' style="font-size:1.3rem">修改</a></li>
+            <li class='list-group-item mb-1' style="border: 0;vertical-align:middle;padding: .5rem 0.8rem;">
+              <a class='btn' type='button' data-bs-toggle='modal' data-bs-target='#modal-{{this._id}}'
+                style="font-size:1.3rem">刪除</a>
+            </li>
+          </ul>
+          {{! Modal }}
+          <div class='modal fade' id='modal-{{this._id}}' tabindex='-1' role='dialog'
+            aria-labelledby='deleteModalCenterTitle' aria-hidden='true'>
+            <div class='modal-dialog modal-dialog-centered'>
+              <div class='modal-content'>
+                <div class='modal-header'>
+                  <h3 class='modal-title' id='deleteModalCenterTitle'>{{this.name}}</h3>
+                  <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+                </div>
+                <div class='modal-body' style="font-size: 1.2rem;">
+                  確認要將「{{this.name}}」刪除嗎？
+                </div>
+                <div class='modal-footer'>
+                  <form action='/expenses/{{this._id}}/?_method=DELETE' method='POST'>
+                    <button type='submit' class='btn btn-outline-danger' style="font-size: 1.2rem;">delete</button>
+                  </form>
                 </div>
               </div>
             </div>
+          </div>
           {{/each}}
         </div>
       </div>
     </div>
-    <div class='col-12 mt-2' style='text-align:center;'>
-      <a class='btn btn-danger' href='/expenses/add' role='button'>新增支出</a>
+    <div class='col-9 mt-5' style='text-align:center;'>
+      <a class='btn' href='/expenses/add' role='button'
+        style="font-size: 2rem;color:cornsilk;background-color:orange">新增支出</a>
     </div>
+
   </div>
 </div>
