@@ -7,17 +7,20 @@ const Category = require('../../models/categories')
 router.get('/', async (req, res) => {
   let totalAmount = 0
   const categories = await Category.find().lean()
+  const months = new Set()
   return Record.find()
     .lean()
     .sort({ date: 'asc' })
     .then((records) => {
       records.forEach((record) => {
         totalAmount += record.amount
+        months.add(record.date.substring(0, 7))
       })
 
       res.render('index', {
         records,
         categories,
+        months,
         totalAmount
       })
     })
