@@ -1,15 +1,30 @@
 <div class='container py-5' style="width: 850px;">
   <div class='row'>
     <div class=' col-8 col-md-8'>
-      <form action='/expenses/filter'>
-        <select style="font-size:1.6rem" class='form-select form-select-lg mb-3' id='filer' name='selectOption'
-          onchange='submit()'>
-          <option value=''>所有類別</option>
-          {{#each categories}}
-          <option value='{{this.name}}' {{#is this.name ../filterOption}} selected {{/is}}>{{this.name}}</option>
-          {{/each}}
-        </select>
-      </form>
+      <div class="row">
+        <div class=' col-6 col-md-6'>
+          <form action='/expenses/months'>
+            <select style="font-size:1.6rem" class='form-select form-select-lg mb-3' id='filer-month'
+              name='selectOption' onchange='submit()'>
+              <option value=''>所有月份</option>
+              {{#each months}}
+              <option value='{{this}}' {{#is this ../filterOption}} selected {{/is}}>{{this}}</option>
+              {{/each}}
+            </select>
+          </form>
+        </div>
+        <div class=' col-6 col-md-6'>
+          <form action='/expenses/categories'>
+            <select style=" font-size:1.6rem" class='form-select form-select-lg mb-3' id='filer-category'
+              name='selectOption' onchange='submit()'>
+              <option value=''>所有類別</option>
+              {{#each categories}}
+              <option value='{{this.name}}' {{#is this.name ../filterOption}} selected {{/is}}>{{this.name}}</option>
+              {{/each}}
+            </select>
+          </form>
+        </div>
+      </div>
     </div>
     <div class='col-8 col-md-8'>
       <div class='row'>
