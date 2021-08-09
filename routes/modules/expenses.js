@@ -37,12 +37,18 @@ router.post('/', async (req, res) => {
     .catch((error) => console.log(error))
 })
 
-// Read: filter by selection
-router.get('/filter', async (req, res) => {
+// Read: filter by categories
+router.get('/categories', async (req, res) => {
   let totalAmount = 0
   const filterOption = req.query.selectOption
   const categories = await Category.find().lean()
   const filterObject = new Object()
+  const months = new Set()
+  const records = await Record.find().lean().sort({ date: 'asc' })
+
+  records.forEach((record) => {
+    months.add(record.date.substring(0, 7))
+  })
 
   filterObject.category = filterOption
 
@@ -58,7 +64,13 @@ router.get('/filter', async (req, res) => {
       records.forEach((record) => {
         totalAmount += record.amount
       })
-      res.render('index', { records, categories, filterOption, totalAmount })
+      res.render('index', {
+        records,
+        categories,
+        filterOption,
+        totalAmount,
+        months
+      })
     })
     .catch((error) => console.log(error))
 })
