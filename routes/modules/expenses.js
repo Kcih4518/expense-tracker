@@ -75,6 +75,43 @@ router.get('/categories', async (req, res) => {
     .catch((error) => console.log(error))
 })
 
+// Read: filter by months
+router.get('/months', async (req, res) => {
+  let totalAmount = 0
+  const categories = await Category.find().lean()
+  const filterOption = req.query.selectOption
+  const filterObject = new Object()
+  const records = await Record.find().lean().sort({ date: 'asc' })
+  const months = new Set()
+
+  records.forEach((record) => {
+    months.add(record.date.substring(0, 7))
+  })
+
+  filterObject.month = filterOption
+
+  // If option is 類別 need to query all record
+  if (!filterOption) {
+    delete filterObject.month
+  }
+
+  return Record.find({ date: { $regex: filterOption, $options: 'i' } })
+    .lean()
+    .then((records) => {
+      records.forEach((record) => {
+        totalAmount += record.amount
+      })
+      res.render('index', {
+        records,
+        categories,
+        filterOption,
+        totalAmount,
+        months
+      })
+    })
+    .catch((error) => console.log(error))
+})
+
 // Update : Display the form for editing expenses record
 // TODO: Error handle : When cannot update DB data
 router.get('/:id/edit', async (req, res) => {
