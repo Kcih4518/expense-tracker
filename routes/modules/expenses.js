@@ -37,66 +37,33 @@ router.post('/', async (req, res) => {
     .catch((error) => console.log(error))
 })
 
-// Read: filter by categories
-router.get('/categories', async (req, res) => {
+// Read: filter by categories or months
+// TODO: Combination of multiple types to filter
+router.get('/filter/:type', async (req, res) => {
+  const type = req.params.type
   let totalAmount = 0
   const filterOption = req.query.selectOption
   const categories = await Category.find().lean()
+  const records = await Record.find().lean().sort({ date: 'asc' })
   const filterObject = new Object()
   const months = new Set()
-  const records = await Record.find().lean().sort({ date: 'asc' })
 
   records.forEach((record) => {
     months.add(record.date.substring(0, 7))
   })
+  if (type === 'categories') filterObject.category = filterOption
+  if (type === 'months')
+    filterObject.date = { $regex: filterOption, $options: 'i' }
 
-  filterObject.category = filterOption
-
-  // If option is 類別 need to query all record
+  // If option is 所有類別/所有月份 need to query all record
   if (!filterOption) {
     delete filterObject.category
+    delete filterObject.date
   }
 
   return Record.find(filterObject)
     .lean()
     .sort({ date: 'asc' })
-    .then((records) => {
-      records.forEach((record) => {
-        totalAmount += record.amount
-      })
-      res.render('index', {
-        records,
-        categories,
-        filterOption,
-        totalAmount,
-        months
-      })
-    })
-    .catch((error) => console.log(error))
-})
-
-// Read: filter by months
-router.get('/months', async (req, res) => {
-  let totalAmount = 0
-  const categories = await Category.find().lean()
-  const filterOption = req.query.selectOption
-  const filterObject = new Object()
-  const records = await Record.find().lean().sort({ date: 'asc' })
-  const months = new Set()
-
-  records.forEach((record) => {
-    months.add(record.date.substring(0, 7))
-  })
-
-  filterObject.month = filterOption
-
-  // If option is 類別 need to query all record
-  if (!filterOption) {
-    delete filterObject.month
-  }
-
-  return Record.find({ date: { $regex: filterOption, $options: 'i' } })
-    .lean()
     .then((records) => {
       records.forEach((record) => {
         totalAmount += record.amount
