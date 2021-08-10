@@ -8,6 +8,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const routes = require('./routes')
+const session = require('express-session')
 require('./config/mongoose')
 const handlebarsHelpers = require('handlebars-helpers')(['comparison'])
 
@@ -27,6 +28,15 @@ app.engine(
   })
 )
 app.set('view engine', 'hbs')
+
+// Setting express-session
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true
+  })
+)
 
 // Setting body-parser
 app.use(express.urlencoded({ extended: true }))
