@@ -32,6 +32,9 @@ router.post('/', async (req, res) => {
     })
   }
 
+  expensesRecord.userID = req.user._id
+  console.log(expensesRecord)
+
   return Record.create(expensesRecord)
     .then(() => res.redirect('/'))
     .catch((error) => console.log(error))
@@ -39,11 +42,12 @@ router.post('/', async (req, res) => {
 
 // Read: filter by categories and months
 router.get('/filter', async (req, res) => {
+  const userID = req.user._id
   let totalAmount = 0
   const categoryOption = req.query.category
   const monthOption = req.query.month
   const categories = await Category.find().lean()
-  const records = await Record.find().lean().sort({ date: 'asc' })
+  const records = await Record.find({ userID }).lean().sort({ date: 'asc' })
   const months = new Set()
 
   records.forEach((record) => {
@@ -59,7 +63,8 @@ router.get('/filter', async (req, res) => {
         }
       },
       { date: { $regex: monthOption, $options: 'i' } }
-    ]
+    ],
+    userID
   })
     .lean()
     .sort({ date: 'asc' })
@@ -82,9 +87,10 @@ router.get('/filter', async (req, res) => {
 // Update : Display the form for editing expenses record
 // TODO: Error handle : When cannot update DB data
 router.get('/:id/edit', async (req, res) => {
+  const userID = req.user._id
   const categories = await Category.find().lean()
-  const id = req.params.id
-  return Record.findById(id)
+  const _id = req.params.id
+  return Record.findOne({ _id, userID })
     .lean()
     .then((record) => {
       res.render('edit', { record, categories })
@@ -96,10 +102,11 @@ router.get('/:id/edit', async (req, res) => {
 // TODO: Error handle : When cannot update DB data
 // TODO: Data verification of req.body
 router.put('/:id', async (req, res) => {
-  const id = req.params.id
+  const userID = req.user._id
+  const _id = req.params.id
   const recordUpdateInfo = req.body
   const categories = await Category.find().lean()
-  const record = await Record.findById(id).lean()
+  const record = await Record.findById(_id).lean()
   const formErrors = []
 
   if (!recordUpdateInfo.name.trim().length) {
@@ -114,7 +121,7 @@ router.put('/:id', async (req, res) => {
     })
   }
 
-  return Record.findById(id)
+  return Record.findOne({ _id, userID })
     .then((record) => {
       record = Object.assign(record, recordUpdateInfo)
       record.save()
@@ -126,8 +133,9 @@ router.put('/:id', async (req, res) => {
 // Delete : Remove expenses record
 // TODO: Error handle : When cannot delete DB data
 router.delete('/:id', (req, res) => {
-  const id = req.params.id
-  Record.findById(id)
+  const userID = req.user._id
+  const _id = req.params.id
+  Record.findOne({ _id, userID })
     .then((record) => record.remove())
     .then(() => res.redirect('/'))
     .catch((error) => console.log(error))
