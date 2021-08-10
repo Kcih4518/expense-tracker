@@ -2,12 +2,17 @@
 const express = require('express')
 const expressHandlebars = require('express-handlebars')
 const methodOverride = require('method-override')
+
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
+
 const routes = require('./routes')
 require('./config/mongoose')
 const handlebarsHelpers = require('handlebars-helpers')(['comparison'])
 
 // Define server info
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT
 
 // Setting express
 const app = express()
