@@ -37,31 +37,30 @@ router.post('/', async (req, res) => {
     .catch((error) => console.log(error))
 })
 
-// Read: filter by categories or months
-// TODO: Combination of multiple types to filter
-router.get('/filter/:type', async (req, res) => {
-  const type = req.params.type
+// Read: filter by categories and months
+router.get('/filter', async (req, res) => {
   let totalAmount = 0
-  const filterOption = req.query.selectOption
+  const categoryOption = req.query.category
+  const monthOption = req.query.month
   const categories = await Category.find().lean()
   const records = await Record.find().lean().sort({ date: 'asc' })
-  const filterObject = new Object()
   const months = new Set()
 
   records.forEach((record) => {
     months.add(record.date.substring(0, 7))
   })
-  if (type === 'categories') filterObject.category = filterOption
-  if (type === 'months')
-    filterObject.date = { $regex: filterOption, $options: 'i' }
 
-  // If option is 所有類別/所有月份 need to query all record
-  if (!filterOption) {
-    delete filterObject.category
-    delete filterObject.date
-  }
-
-  return Record.find(filterObject)
+  return Record.find({
+    $and: [
+      {
+        category: {
+          $regex: categoryOption,
+          $options: 'i'
+        }
+      },
+      { date: { $regex: monthOption, $options: 'i' } }
+    ]
+  })
     .lean()
     .sort({ date: 'asc' })
     .then((records) => {
@@ -71,7 +70,8 @@ router.get('/filter/:type', async (req, res) => {
       res.render('index', {
         records,
         categories,
-        filterOption,
+        categoryOption,
+        monthOption,
         totalAmount,
         months
       })
