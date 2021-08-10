@@ -10,6 +10,7 @@ if (process.env.NODE_ENV !== 'production') {
 const routes = require('./routes')
 const session = require('express-session')
 const flash = require('connect-flash')
+const usePassport = require('./config/passport')
 require('./config/mongoose')
 const handlebarsHelpers = require('handlebars-helpers')(['comparison'])
 
@@ -44,6 +45,9 @@ app.use(express.urlencoded({ extended: true }))
 
 // Setting middleware: method-override
 app.use(methodOverride('_method'))
+
+// Setting passport.js
+usePassport(app)
 
 // Setting connect-flash
 app.use(flash())
