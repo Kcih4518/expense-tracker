@@ -1,5 +1,8 @@
 // Require node_modules
 const Categories = require('../categories')
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
 const db = require('../../config/mongoose')
 const categoriesJson = require('./categories.json')
 
