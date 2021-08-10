@@ -5,10 +5,11 @@ const Category = require('../../models/categories')
 
 // Read : View all the expenses
 router.get('/', async (req, res) => {
+  const userID = req.user._id
   let totalAmount = 0
   const categories = await Category.find().lean()
   const months = new Set()
-  return Record.find()
+  return Record.find({ userID })
     .lean()
     .sort({ date: 'asc' })
     .then((records) => {
