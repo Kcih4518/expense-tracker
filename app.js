@@ -9,6 +9,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 const routes = require('./routes')
 const session = require('express-session')
+const flash = require('connect-flash')
 require('./config/mongoose')
 const handlebarsHelpers = require('handlebars-helpers')(['comparison'])
 
@@ -43,6 +44,16 @@ app.use(express.urlencoded({ extended: true }))
 
 // Setting middleware: method-override
 app.use(methodOverride('_method'))
+
+// Setting connect-flash
+app.use(flash())
+
+// Setting middleware to store info into res.locals
+app.use((req, res, next) => {
+  res.locals.success_msg = req.flash('success_msg')
+  res.locals.warning_msg = req.flash('warning_msg')
+  next()
+})
 
 // Setting Express router and import request into router
 app.use(routes)
