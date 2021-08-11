@@ -58,7 +58,14 @@ $ cd expense-tracker.git
 $ npm install
 ```
 
-3. 載入 Record Seeds
+3. 根據需求修改.env.example 的內容並更換其檔名
+
+```bash
+$ vim .env.example
+$ mv .env.example .env
+```
+
+4. 載入 Record Seeds
 
 本專案需在 local 建立 MongoDB 並且使用預設 port 27017。
 
@@ -66,13 +73,13 @@ $ npm install
 $ npm run seed
 ```
 
-4. 透過 npm 在 local 啟動 web server
+5. 透過 npm 在 local 啟動 web server
 
 ```bash
 $ npm run dev
 Express is running on http://localhost:3000
 ```
 
-5. 透過 Browser 打開 [http://localhost:3000](http://localhost:3000)
+6. 透過 Browser 打開 [http://localhost:3000](http://localhost:3000)
 
 ![](https://i.imgur.com/4F6h1JT.png)
